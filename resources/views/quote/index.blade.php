@@ -2,8 +2,8 @@
 
 @push('style')
 <style>
-    .thumbnail{
-        border-radius:5px;
+    .thumbnail {
+        border-radius: 5px;
         border: 1px solid grey;
         padding: 10px 5px;
     }
@@ -25,9 +25,17 @@
     @endif
 
     <div class="row">
+        <div class="col-md-12 text-center mb-5">
+            <a href=" {{ route('quotes.random') }} " class="btn btn-primary">
+                Random
+            </a>
+        </div>
+    </div>
+
+    <div class="row">
         @foreach ($quotes as $quote)
         <div class="col-md-4 mb-3">
-            <div class="img-thumbnail" >
+            <div class="img-thumbnail">
                 <div class="caption">{{ $quote->judul }}</div>
                 <a href="/quotes/{{$quote->slug}}" class="btn btn-primary"> Lihat Kutipan </a>
             </div>

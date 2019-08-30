@@ -95,4 +95,12 @@ class QuoteController extends Controller
             return redirect()->route('quotes.index')->with('danger', 'Anda bukan pemilik kutipan');
         }
     }
+
+    public function random(){
+        $quote = Quote::inRandomOrder()->first();
+
+        if(empty($quote)) abort(404);
+
+        return view('quote.single',compact('quote'));
+    }
 }
