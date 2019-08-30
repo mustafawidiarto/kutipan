@@ -18,6 +18,12 @@
     </div>
     @endif
 
+    @if(session('danger'))
+    <div class="alert alert-danger">
+        <p>{{ session('danger') }}</p>
+    </div>
+    @endif
+
     <div class="row">
         @foreach ($quotes as $quote)
         <div class="col-md-4 mb-3">

@@ -9,33 +9,17 @@ use Illuminate\Http\Request;
 
 class QuoteController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         $quotes = Quote::all();
         return view('quote.index', compact('quotes'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         return view('quote.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $this->validate($request, [
@@ -59,12 +43,6 @@ class QuoteController extends Controller
         return redirect()->route('quotes.index')->with('msg', 'kutipan berhasil di submit');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($slug)
     {
         $quote = Quote::where('slug', $slug)->first();
@@ -74,37 +52,47 @@ class QuoteController extends Controller
         return view('quote.single',compact('quote'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
-        //
+        $quote = Quote::findOrFail($id);
+
+        if($quote->isOwner()){
+            return view('quote.edit', compact('quote'));
+        }else{
+            return redirect()->route('quotes.index')->with('danger', 'Anda tidak memiliki hak akses');
+        }
+
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'title' => 'required|min:3',
+            'subject' => 'required|min:5',
+        ]);
+
+        //slug tidak di update karena akan berpengaruh pada SEO
+        $quote = Quote::findOrFail($id);
+        if($quote->isOwner()){
+            $quote->update([
+                'judul' => $request->title,
+                'subject' => $request->subject,
+            ]);
+
+            return redirect()->route('quotes.index')->with('msg', 'kutipan berhasil di update');
+        }else{
+            return redirect()->route('quotes.index')->with('danger', 'Anda bukan pemilik kutipan');
+        }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
-        //
+        $quote = Quote::findOrFail($id);
+        if($quote->isOwner()){
+            $quote->delete();
+            return redirect()->route('quotes.index')->with('msg', 'kutipan berhasil di hapus');
+        }else{
+            return redirect()->route('quotes.index')->with('danger', 'Anda bukan pemilik kutipan');
+        }
     }
 }
