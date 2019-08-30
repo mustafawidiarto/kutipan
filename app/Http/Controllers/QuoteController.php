@@ -70,7 +70,7 @@ class QuoteController extends Controller
         $quote = Quote::where('slug', $slug)->first();
 
         if(empty($quote)) abort(404);
-        
+
         return view('quote.single',compact('quote'));
     }
 
