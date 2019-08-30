@@ -65,9 +65,13 @@ class QuoteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($slug)
     {
-        //
+        $quote = Quote::where('slug', $slug)->first();
+
+        if(empty($quote)) abort(404);
+        
+        return view('quote.single',compact('quote'));
     }
 
     /**
