@@ -13,7 +13,7 @@ class CreateQuotesTable extends Migration
      */
     public function up()
     {
-        Schema::create('=quotes', function (Blueprint $table) {
+        Schema::create('quotes', function (Blueprint $table) {
             //judul, slug, subject, user_id
             $table->bigIncrements('id');
             $table->string('judul', 100);
