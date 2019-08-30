@@ -16,7 +16,8 @@ class QuoteController extends Controller
      */
     public function index()
     {
-        //
+        $quotes = Quote::all();
+        return view('quote.index', compact('quotes'));
     }
 
     /**
@@ -45,6 +46,9 @@ class QuoteController extends Controller
         //$slug = str_slug($request->title, '-').'-'.now(); ->agar memiliki judul yang unik
         $slug = str_slug($request->title, '-');
 
+        if(Quote::where('slug', $slug)->first() != null)
+            $slug = $slug.'-'.time();
+
         Quote::create([
             'judul' => $request->title,
             'slug' => $slug,
@@ -52,7 +56,7 @@ class QuoteController extends Controller
             'user_id' =>Auth::user()->id
         ]);
 
-        return redirect('/home');
+        return redirect()->route('quotes.index')->with('msg', 'kutipan berhasil di submit');
     }
 
     /**

@@ -19,8 +19,8 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::resource('quote', 'QuoteController', ['only' => 'index', 'show']);
+Route::resource('quotes', 'QuoteController', ['only' => 'index', 'show']);
 
 Route::group(['midleware' => 'auth'], function(){
-    Route::resource('quote', 'QuoteController', ['except' => 'index', 'show']);
+    Route::resource('quotes', 'QuoteController', ['except' => 'index', 'show']);
 });

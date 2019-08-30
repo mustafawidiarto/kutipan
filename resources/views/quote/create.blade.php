@@ -13,7 +13,7 @@
             </div>
         @endif
 
-        <form action=" {{ route('quote.store') }} " method="POST">
+        <form action=" {{ route('quotes.store') }} " method="POST">
             @csrf
             <div class="form-group">
                 <label for="title">Judul</label>
