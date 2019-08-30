@@ -14,8 +14,15 @@ class CreateQuotesTable extends Migration
     public function up()
     {
         Schema::create('=quotes', function (Blueprint $table) {
+            //judul, slug, subject, user_id
             $table->bigIncrements('id');
+            $table->string('judul', 100);
+            $table->string('slug', 120);
+            $table->text('subject');
+            $table->bigInteger('user_id')->unsigned();
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 
