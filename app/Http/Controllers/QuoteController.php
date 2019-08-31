@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Auth;
 use App\Models\User;
 use App\Models\Quote;
+use App\Models\QuoteComment;
 use Illuminate\Http\Request;
 
 class QuoteController extends Controller
@@ -47,10 +48,11 @@ class QuoteController extends Controller
     public function show($slug)
     {
         $quote = Quote::where('slug', $slug)->first();
+        $comments = QuoteComment::where('quote_id',$quote->id)->get();
 
         if(empty($quote)) abort(404);
 
-        return view('quote.single',compact('quote'));
+        return view('quote.single',compact('quote','comments'));
     }
 
     public function edit($id)

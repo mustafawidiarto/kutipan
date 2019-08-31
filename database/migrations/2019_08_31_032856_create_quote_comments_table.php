@@ -13,7 +13,7 @@ class CreateQuoteCommentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('quoteComments', function (Blueprint $table) {
+        Schema::create('quote_comments', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->text('subject');
             $table->bigInteger('quote_id')->unsigned();
@@ -32,6 +32,6 @@ class CreateQuoteCommentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('quoteComments');
+        Schema::dropIfExists('quote_comments');
     }
 }

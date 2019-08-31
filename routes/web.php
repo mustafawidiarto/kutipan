@@ -3,6 +3,7 @@
 
 Route::group(['midleware' => 'auth'], function(){
     Route::resource('quotes', 'QuoteController', ['except' => ['index', 'show']]);
+    Route::post('/quotes-comment/{quote}','QuoteCommentController@store')->name('comment');
 });
 Route::get('/profile/{id?}', 'HomeController@profile');
 Route::resource('quotes', 'QuoteController', ['only' => ['index', 'show']]);
