@@ -50,7 +50,7 @@
 
     <div class="comment mt-5">
 
-        @foreach($comments as $comment)
+        @foreach($quote->comments as $comment)
             @if(session('msg-comment-'.$comment->id))
             <div class="alert alert-success">
                 <li>{{ session('msg-'.$comment->id) }}</li>

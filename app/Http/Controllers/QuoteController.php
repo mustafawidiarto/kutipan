@@ -47,12 +47,11 @@ class QuoteController extends Controller
 
     public function show($slug)
     {
-        $quote = Quote::where('slug', $slug)->first();
-        $comments = QuoteComment::where('quote_id',$quote->id)->get();
+        $quote = Quote::with('comments.user')->where('slug', $slug)->first();
 
         if(empty($quote)) abort(404);
 
-        return view('quote.single',compact('quote','comments'));
+        return view('quote.single',compact('quote'));
     }
 
     public function edit($id)
