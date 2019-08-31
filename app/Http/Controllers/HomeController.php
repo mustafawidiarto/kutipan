@@ -15,23 +15,19 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth', ['except' => ['profile']]);
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
     public function index()
     {
         //return view('home');
         return redirect()->route('quotes.index');
     }
 
-    public function profile()
+    public function profile($id = null)
     {
-        $user = User::findOrFail(Auth::user()->id);
+        if($id == null) $user = User::findOrFail(Auth::user()->id);
+        else $user =  User::findOrFail($id);
         return view('profile', compact('user'));
     }
 }

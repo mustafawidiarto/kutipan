@@ -5,7 +5,7 @@
     <div class="jumbotron">
         <h1>{{ $quote->judul }}</h1>
         <p>{{ $quote->subject }}</p>
-        <p>Di tulis oleh: {{ $quote->user->name }}</p>
+        <p>Di tulis oleh: <a href="/profile/{{ $quote->user->id }}">{{ $quote->user->name }}</a></p>
 
         <p><a href=" {{route('quotes.index')}} " class="btn btn-primary btn-lg">Balik ke daftar</a></p>
 

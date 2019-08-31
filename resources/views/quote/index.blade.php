@@ -29,6 +29,11 @@
             <a href=" {{ route('quotes.random') }} " class="btn btn-primary">
                 Random
             </a>
+            @if(!Auth::guest())
+            <a href=" {{ route('quotes.create') }} " class="btn btn-primary">
+                Create
+            </a>
+            @endif
         </div>
     </div>
 

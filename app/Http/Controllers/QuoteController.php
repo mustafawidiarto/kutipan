@@ -17,6 +17,7 @@ class QuoteController extends Controller
 
     public function create()
     {
+        if(Auth::guest()) return redirect('/quotes')->with('danger','Anda tidak memiliki hak akses');
         return view('quote.create');
     }
 
