@@ -21,4 +21,8 @@ class Quote extends Model
             return false;
         return Auth::user()->id == $this->user_id;
     }
+
+    public function comments(){
+        return $this->hasMany('App\Models\QuoteComment');
+    }
 }

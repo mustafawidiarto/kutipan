@@ -18,5 +18,6 @@
         </form>
         @endif
     </div>
+    <p><a href=" /comment/create" class="btn btn-warning btn-lg">Comment</a></p>
 </div>
 @endsection
