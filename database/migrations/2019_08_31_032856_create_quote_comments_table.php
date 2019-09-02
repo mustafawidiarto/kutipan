@@ -20,7 +20,7 @@ class CreateQuoteCommentsTable extends Migration
             $table->bigInteger('user_id')->unsigned();
             $table->timestamps();
 
-            $table->foreign('quote_id')->references('id')->on('quotes');
+            $table->foreign('quote_id')->references('id')->on('quotes')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users');
         });
     }

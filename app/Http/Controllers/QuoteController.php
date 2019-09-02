@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Auth;
+use JavaScript;
 use App\Models\Tag;
 use App\Models\User;
 use App\Models\Quote;
@@ -66,9 +67,10 @@ class QuoteController extends Controller
     public function edit($id)
     {
         $quote = Quote::findOrFail($id);
-
         if($quote->isOwner()){
-            return view('quote.edit', compact('quote'));
+            $tags = Tag::all();
+            $counter = count($quote->tags);
+            return view('quote.edit', compact('quote', 'tags', 'counter'));
         }else{
             return redirect()->route('quotes.index')->with('danger', 'Anda tidak memiliki hak akses');
         }
@@ -82,14 +84,21 @@ class QuoteController extends Controller
             'subject' => 'required|min:5',
         ]);
 
+
+        $request->tags = array_diff($request->tags, [0]);
+        if(empty($request->tags))
+            return redirect()->route('quotes.edit',[$id])->withInput($request->Input)->with('err_tag', 'Minimal 1 tag');
+
         //slug tidak di update karena akan berpengaruh pada SEO
         $quote = Quote::findOrFail($id);
+
+
         if($quote->isOwner()){
             $quote->update([
                 'judul' => $request->title,
                 'subject' => $request->subject,
             ]);
-
+            $quote->tags()->sync($request->tags);
             return redirect()->route('quotes.index')->with('msg', 'kutipan berhasil di update');
         }else{
             return redirect()->route('quotes.index')->with('danger', 'Anda bukan pemilik kutipan');

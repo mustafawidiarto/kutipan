@@ -6,7 +6,11 @@
         <h1>{{ $quote->judul }}</h1>
         <p>{{ $quote->subject }}</p>
         <p>Di tulis oleh: <a href="/profile/{{ $quote->user->id }}">{{ $quote->user->name }}</a></p>
-
+        <p>Tag:
+            @foreach($quote->tags as $tag)
+                {{ $tag->name }}
+            @endforeach
+        </p>
         <a href=" {{route('quotes.index')}} " class="btn btn-primary">Balik ke daftar</a>
 
         @if($quote->isOwner())
@@ -51,9 +55,9 @@
     <div class="comment mt-5">
 
         @foreach($quote->comments as $comment)
-            @if(session('msg-comment-'.$comment->id))
+            @if(session('success-comment-'.$comment->id))
             <div class="alert alert-success">
-                <li>{{ session('msg-'.$comment->id) }}</li>
+                <li>{{ session('success-comment-'.$comment->id) }}</li>
             </div>
             @endif
 

@@ -23,7 +23,7 @@ class QuoteCommentController extends Controller
         ]);
 
 
-        return redirect()->route('quotes.show', $quote->slug)->with('msg-comment-'.$comment->id,'Berhasil menambahkan komentar');
+        return redirect()->route('quotes.show', $quote->slug)->with('success-comment-'.$comment->id, 'Berhasil menambahkan komentar');
     }
 
     public function edit(QuoteComment $comment)
