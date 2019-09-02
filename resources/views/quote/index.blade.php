@@ -42,6 +42,12 @@
         <div class="col-md-4 mb-3">
             <div class="img-thumbnail">
                 <div class="caption">{{ $quote->judul }}</div>
+                <div class="tag">
+                    Tag:
+                    @foreach ($quote->tags as $tag)
+                        {{ $tag->name }}
+                    @endforeach
+                </div>
                 <a href="/quotes/{{$quote->slug}}" class="btn btn-primary"> Lihat Kutipan </a>
             </div>
         </div>

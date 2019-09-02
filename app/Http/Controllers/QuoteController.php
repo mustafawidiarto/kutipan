@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Auth;
+use App\Models\Tag;
 use App\Models\User;
 use App\Models\Quote;
 use App\Models\QuoteComment;
@@ -12,14 +13,15 @@ class QuoteController extends Controller
 {
     public function index()
     {
-        $quotes = Quote::all();
+        $quotes = Quote::with('tags')->get();
         return view('quote.index', compact('quotes'));
     }
 
     public function create()
     {
-        if(Auth::guest()) return redirect('/quotes')->with('danger','Anda tidak memiliki hak akses');
-        return view('quote.create');
+        if(Auth::guest()) return redirect('/login');
+        $tags = Tag::all();
+        return view('quote.create', compact('tags'));
     }
 
     public function store(Request $request)
@@ -35,12 +37,19 @@ class QuoteController extends Controller
         if(Quote::where('slug', $slug)->first() != null)
             $slug = $slug.'-'.time();
 
-        Quote::create([
+        //menghapus nilai dalam tag jika bernilai 0
+        $request->tags = array_diff($request->tags, [0]);
+        if(empty($request->tags))
+            return redirect()->route('quotes.create')->withInput($request->Input)->with('err_tag', 'Minimal 1 tag');
+
+        $quote = Quote::create([
             'judul' => $request->title,
             'slug' => $slug,
             'subject' => $request->subject,
             'user_id' =>Auth::user()->id
         ]);
+
+        $quote->tags()->attach($request->tags);
 
         return redirect()->route('quotes.index')->with('msg', 'kutipan berhasil di submit');
     }
@@ -98,7 +107,8 @@ class QuoteController extends Controller
         }
     }
 
-    public function random(){
+    public function random()
+    {
         $quote = Quote::inRandomOrder()->first();
 
         if(empty($quote)) abort(404);

@@ -25,4 +25,8 @@ class Quote extends Model
     public function comments(){
         return $this->hasMany('App\Models\QuoteComment');
     }
+
+    public function tags(){
+        return $this->belongsToMany('App\Models\Tag');
+    }
 }
