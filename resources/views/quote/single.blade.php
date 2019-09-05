@@ -8,10 +8,14 @@
         <p>Di tulis oleh: <a href="/profile/{{ $quote->user->id }}">{{ $quote->user->name }}</a></p>
         <p>Tag:
             @foreach($quote->tags as $tag)
-                {{ $tag->name }}
+            {{ $tag->name }}
             @endforeach
         </p>
         <a href=" {{route('quotes.index')}} " class="btn btn-primary">Balik ke daftar</a>
+        <div class="like_wrapper mt-2">
+            <div class="total_like">0 Total Like</div>
+            <div class="btn btn-primary btn-like" data-type="1" data-model-id="{{ $quote->id }}">Likes</div>
+        </div>
 
         @if($quote->isOwner())
         <a href=" {{ route('quotes.edit', $quote->id) }} " class="btn btn-warning">Edit</a>
@@ -54,35 +58,55 @@
 
     <div class="comment mt-5">
         @foreach($quote->comments as $comment)
-            @if(session('success-comment-'.$comment->id))
-            <div class="alert alert-success">
-                <li>{{ session('success-comment-'.$comment->id) }}</li>
-            </div>
-            @endif
+        @if(session('success-comment-'.$comment->id))
+        <div class="alert alert-success">
+            <li>{{ session('success-comment-'.$comment->id) }}</li>
+        </div>
+        @endif
 
-            @if(session('danger-comment-'.$comment->id))
-            <div class="alert alert-danger">
-                <li>{{ session('danger-comment-'.$comment->id) }}</li>
-            </div>
-            @endif
+        @if(session('danger-comment-'.$comment->id))
+        <div class="alert alert-danger">
+            <li>{{ session('danger-comment-'.$comment->id) }}</li>
+        </div>
+        @endif
 
-            <p><a href="/profile/{{$comment->user_id}}"> {{ $comment->user->name }} </a></p>
-            <p> {{ $comment->subject }} </p>
+        <p><a href="/profile/{{$comment->user_id}}"> {{ $comment->user->name }} </a></p>
+        <p> {{ $comment->subject }} </p>
 
-            @if($comment->isOwner())
-                <a class="btn btn-primary" href=" {{ route('comment.edit',$comment) }} ">Edit</a>
-                <a class="btn btn-danger" href=" {{ route('comment.destroy', $comment) }} " onclick="event.preventDefault();
+        @if($comment->isOwner())
+        <a class="btn btn-primary" href=" {{ route('comment.edit',$comment) }} ">Edit</a>
+        <a class="btn btn-danger" href=" {{ route('comment.destroy', $comment) }} " onclick="event.preventDefault();
                         document.getElementById('delete-form').submit();">
-                    {{ __('Hapus') }}
-                </a>
+            {{ __('Hapus') }}
+        </a>
 
-                <form id="delete-form" action="{{ route('comment.destroy', $comment) }}" method="POST" style="display: none;">
-                    @csrf
-                    @method('DELETE')
-                </form>
-            @endif
-            <hr>
+        <form id="delete-form" action="{{ route('comment.destroy', $comment) }}" method="POST" style="display: none;">
+            @csrf
+            @method('DELETE')
+        </form>
+        @endif
+
+        <div class="like_wrapper mt-2">
+            <div class="total_like">0 Total Like</div>
+            <div class="btn btn-primary btn-like" data-type="2" data-model-id="{{ $comment->id }}">Likes</div>
+        </div>
+        <hr>
         @endforeach
     </div>
 </div>
 @endsection
+
+@push('script')
+<script>
+    $(document).on('click touchstart', '.btn-like', function () {
+        var _this = $(this);
+
+        var _url = "/like/" + _this.attr('data-type') +
+            "/" + _this.attr('data-model-id');
+
+        $.get(_url, function (data) {
+            console.log(data);
+        })
+    })
+</script>
+@endpush
