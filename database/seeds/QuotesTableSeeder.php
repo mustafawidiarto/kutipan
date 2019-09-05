@@ -26,5 +26,19 @@ class QuotesTableSeeder extends Seeder
         //         'user_id' => '1'
         //     ]);
         // }
+
+        Quote::create([
+            'judul' => 'Merdeka atau Mati',
+            'slug' => str_slug('Merdeka atau Mati'),
+            'subject' => 'Lebih baik mati dengan kebanggaan daripada hidup penuh kehinaan',
+            'user_id' => '1'
+        ]);
+
+        Quote::create([
+            'judul' => 'Cinta dan Khianat',
+            'slug' => str_slug('Cinta dan Khianat'),
+            'subject' => 'Mencintai dan terluka lebih baik dibanding tak pernah mencintai',
+            'user_id' => '2'
+        ]);
     }
 }
