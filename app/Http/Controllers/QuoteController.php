@@ -12,10 +12,17 @@ use Illuminate\Http\Request;
 
 class QuoteController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $quotes = Quote::with('tags')->get();
-        return view('quote.index', compact('quotes'));
+        $tags = Tag::all();
+        $search_q = urlencode($request->search);
+
+        if(!empty($search_q))
+            $quotes = Quote::with('tags')->where('judul', 'like', '%'.$search_q.'%')->get();
+        else
+            $quotes = Quote::with('tags')->get();
+
+        return view('quote.index', compact('quotes','tags'));
     }
 
     public function create()
@@ -123,5 +130,15 @@ class QuoteController extends Controller
         if(empty($quote)) abort(404);
 
         return view('quote.single',compact('quote'));
+    }
+
+    public function filter($tag){
+        $tags = Tag::all();
+
+        $quotes = Quote::with('tags')->whereHas('tags', function($query) use ($tag){
+            $query->where('name', $tag);
+        })->get();
+
+        return view('quote.index', compact('tags', 'quotes'));
     }
 }

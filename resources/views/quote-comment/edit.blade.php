@@ -21,7 +21,7 @@
                 <textarea name="subject" id="subject" cols="30" rows="1" class="form-control"> {{ old('subject')? old('subject') : $comment->subject }} </textarea>
             </div>
 
-            <button type="submit" class="btn btn-default btn-block">Update Komentar</button>
+            <button type="submit" class="btn btn-primary btn-block">Update Komentar</button>
         </form>
     </div>
 </div>

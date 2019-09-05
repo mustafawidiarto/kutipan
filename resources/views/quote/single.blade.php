@@ -49,11 +49,10 @@
                 class="form-control"> {{old('subject')}} </textarea>
         </div>
 
-        <button type="submit" class="btn btn-default btn-block">Komentar</button>
+        <button type="submit" class="btn btn-primary btn-block">Komentar</button>
     </form>
 
     <div class="comment mt-5">
-
         @foreach($quote->comments as $comment)
             @if(session('success-comment-'.$comment->id))
             <div class="alert alert-success">

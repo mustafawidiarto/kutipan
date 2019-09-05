@@ -10,6 +10,11 @@ use Illuminate\Http\Request;
 
 class QuoteCommentController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function store(Request $request, Quote $quote)
     {
         $this->validate($request,[
@@ -45,7 +50,7 @@ class QuoteCommentController extends Controller
                 'subject' => $request->subject
             ]);
 
-            return redirect()->route('quotes.show', $comment->quote->slug)->with('msg-comment-'.$comment->id,'Berhasil mengubah komentar');
+            return redirect()->route('quotes.show', $comment->quote->slug)->with('success-comment-'.$comment->id,'Berhasil mengubah komentar');
         }
 
         return redirect()->route('quotes.show', $comment->quote->slug)->with('danger-comment-'.$comment->id,'Komentar ini bukan milik anda');

@@ -23,5 +23,9 @@ class TagsTableSeeder extends Seeder
         Tag::create([
             'name' => 'semangat'
         ]);
+
+        Tag::create([
+            'name' => 'nasionalisme'
+        ]);
     }
 }
