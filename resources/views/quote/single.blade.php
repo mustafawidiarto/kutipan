@@ -11,11 +11,27 @@
             {{ $tag->name }}
             @endforeach
         </p>
-        <a href=" {{route('quotes.index')}} " class="btn btn-primary">Balik ke daftar</a>
-        <div class="like_wrapper mt-2">
-            <div class="total_like">0 Total Like</div>
-            <div class="btn btn-primary btn-like" data-type="1" data-model-id="{{ $quote->id }}">Likes</div>
+        <div class="row mb-3">
+            <div class="col-md-2">
+                <a href=" {{route('quotes.index')}} " class="btn btn-primary">Balik ke daftar</a>
+            </div>
+            <div class="col-md-5">
+                <div class="like_wrapper">
+                    <span class="total_like">
+                        <span class="total_number">0</span> Total Like
+                    </span>
+                    <button class="btn btn-primary btn-like" data-type="1" data-model-id="{{ $quote->id }}">Likes
+                    </button>
+                    @if($quote->isOwner())
+                    <span class="like_warning" style="color: red; display:none">
+                        Nggak boleh like sendiri
+                    </span>
+                    @endif
+                </div>
+            </div>
         </div>
+
+
 
         @if($quote->isOwner())
         <a href=" {{ route('quotes.edit', $quote->id) }} " class="btn btn-warning">Edit</a>
@@ -56,7 +72,7 @@
         <button type="submit" class="btn btn-primary btn-block">Komentar</button>
     </form>
 
-    <div class="comment mt-5">
+    <div class="comment mt-3">
         @foreach($quote->comments as $comment)
         @if(session('success-comment-'.$comment->id))
         <div class="alert alert-success">
@@ -70,25 +86,40 @@
         </div>
         @endif
 
-        <p><a href="/profile/{{$comment->user_id}}"> {{ $comment->user->name }} </a></p>
-        <p> {{ $comment->subject }} </p>
+        <div class="row">
+            <div class="col-md-3">
+                <p><a href="/profile/{{$comment->user_id}}"> {{ $comment->user->name }} </a></p>
+                <p> {{ $comment->subject }} </p>
+            </div>
+            <div class="col-md-9 text-right">
+                <span class="like_wrapper mt-2">
+                    <span class="total_like">
+                        <span class="total_number">0</span> Total Like
+                    </span>
+                    <div class="btn btn-primary btn-like" data-type="2" data-model-id="{{ $comment->id }}">
+                        Likes
+                    </div>
+                    @if($comment->isOwner())
+                    <span class="like_warning" style="color:red; display:none">
+                        Nggak boleh like sendiri
+                    </span>
+                    @endif
+                </span>
 
-        @if($comment->isOwner())
-        <a class="btn btn-primary" href=" {{ route('comment.edit',$comment) }} ">Edit</a>
-        <a class="btn btn-danger" href=" {{ route('comment.destroy', $comment) }} " onclick="event.preventDefault();
-                        document.getElementById('delete-form').submit();">
-            {{ __('Hapus') }}
-        </a>
+                @if($comment->isOwner())
+                <a class="btn btn-primary" href=" {{ route('comment.edit',$comment) }} ">Edit</a>
+                <a class="btn btn-danger" href=" {{ route('comment.destroy', $comment) }} " onclick="event.preventDefault();
+                                    document.getElementById('delete-form').submit();">
+                    {{ __('Hapus') }}
+                </a>
 
-        <form id="delete-form" action="{{ route('comment.destroy', $comment) }}" method="POST" style="display: none;">
-            @csrf
-            @method('DELETE')
-        </form>
-        @endif
-
-        <div class="like_wrapper mt-2">
-            <div class="total_like">0 Total Like</div>
-            <div class="btn btn-primary btn-like" data-type="2" data-model-id="{{ $comment->id }}">Likes</div>
+                <form id="delete-form" action="{{ route('comment.destroy', $comment) }}" method="POST"
+                    style="display: none;">
+                    @csrf
+                    @method('DELETE')
+                </form>
+                @endif
+            </div>
         </div>
         <hr>
         @endforeach
@@ -105,7 +136,14 @@
             "/" + _this.attr('data-model-id');
 
         $.get(_url, function (data) {
-            console.log(data);
+            if(data == '0'){
+                _this.next('.like_warning').show().delay(500).fadeOut('slow');
+            }else{
+                _this.addClass('btn-danger').removeClass('btn-primary').html('unlike');
+                var totalLike = _this.parents('.like_wrapper').find('.total_number');
+                totalLike.html(parseInt(totalLike.html()) + 1);
+                console.log(data);
+            }
         })
     })
 </script>
