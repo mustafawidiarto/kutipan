@@ -18,9 +18,10 @@
             <div class="col-md-5">
                 <div class="like_wrapper">
                     <span class="total_like">
-                        <span class="total_number">0</span> Total Like
+                        <span class="total_number"> {{ $quote->likes->count() }} </span> Total Like
                     </span>
-                    <button class="btn btn-primary btn-like" data-type="1" data-model-id="{{ $quote->id }}">Likes
+                    <button class="btn {{ $quote->is_liked() ? 'btn-danger btn-unlike':'btn-primary btn-like' }}" data-type="1" data-model-id="{{ $quote->id }}">
+                        {{ $quote->is_liked() ? 'Unlike':'Like' }}
                     </button>
                     @if($quote->isOwner())
                     <span class="like_warning" style="color: red; display:none">
@@ -94,10 +95,10 @@
             <div class="col-md-9 text-right">
                 <span class="like_wrapper mt-2">
                     <span class="total_like">
-                        <span class="total_number">0</span> Total Like
+                        <span class="total_number"> {{ $comment->likes->count() }} </span> Total Like
                     </span>
-                    <div class="btn btn-primary btn-like" data-type="2" data-model-id="{{ $comment->id }}">
-                        Likes
+                    <div class="btn {{ $comment->is_liked()?'btn-danger btn-unlike':'btn-primary btn-like' }}" data-type="2" data-model-id="{{ $comment->id }}">
+                        {{ $comment->is_liked()?'Unlike':'Like' }}
                     </div>
                     @if($comment->isOwner())
                     <span class="like_warning" style="color:red; display:none">
@@ -139,11 +140,25 @@
             if(data == '0'){
                 _this.next('.like_warning').show().delay(500).fadeOut('slow');
             }else{
-                _this.addClass('btn-danger').removeClass('btn-primary').html('unlike');
+                _this.addClass('btn-danger btn-unlike').removeClass('btn-primary btn-like').html('unlike');
                 var totalLike = _this.parents('.like_wrapper').find('.total_number');
                 totalLike.html(parseInt(totalLike.html()) + 1);
                 console.log(data);
             }
+        })
+    })
+
+    $(document).on('click touchstart', '.btn-unlike', function () {
+        var _this = $(this);
+
+        var _url = "/unlike/" + _this.attr('data-type') +
+            "/" + _this.attr('data-model-id');
+
+        $.get(_url, function (data) {
+            _this.addClass('btn-primary btn-like').removeClass('btn-danger btn-unlike').html('like');
+            var totalLike = _this.parents('.like_wrapper').find('.total_number');
+            totalLike.html(parseInt(totalLike.html()) - 1);
+            console.log(data);
         })
     })
 </script>

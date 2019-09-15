@@ -6,6 +6,7 @@ Route::group(['midleware' => 'auth'], function(){
     Route::put('/quotes-comment/{comment}','QuoteCommentController@update')->name('comment.update');
     Route::delete('/quotes-comment/{comment}/delete','QuoteCommentController@destroy')->name('comment.destroy');
     Route::get('/like/{type}/{model_id}', 'LikeController@like');
+    Route::get('/unlike/{type}/{model_id}', 'LikeController@unlike');
 });
 
 Auth::routes();
