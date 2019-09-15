@@ -16,19 +16,9 @@
                 <a href=" {{route('quotes.index')}} " class="btn btn-primary">Balik ke daftar</a>
             </div>
             <div class="col-md-5">
-                <div class="like_wrapper">
-                    <span class="total_like">
-                        <span class="total_number"> {{ $quote->likes->count() }} </span> Total Like
-                    </span>
-                    <button class="btn {{ $quote->is_liked() ? 'btn-danger btn-unlike':'btn-primary btn-like' }}" data-type="1" data-model-id="{{ $quote->id }}">
-                        {{ $quote->is_liked() ? 'Unlike':'Like' }}
-                    </button>
-                    @if($quote->isOwner())
-                    <span class="like_warning" style="color: red; display:none">
-                        Nggak boleh like sendiri
-                    </span>
-                    @endif
-                </div>
+                @component('layouts.likes',
+                [ 'content' => $quote,'model_type' => 1] )
+                @endcomponent
             </div>
         </div>
 
@@ -93,19 +83,9 @@
                 <p> {{ $comment->subject }} </p>
             </div>
             <div class="col-md-9 text-right">
-                <span class="like_wrapper mt-2">
-                    <span class="total_like">
-                        <span class="total_number"> {{ $comment->likes->count() }} </span> Total Like
-                    </span>
-                    <div class="btn {{ $comment->is_liked()?'btn-danger btn-unlike':'btn-primary btn-like' }}" data-type="2" data-model-id="{{ $comment->id }}">
-                        {{ $comment->is_liked()?'Unlike':'Like' }}
-                    </div>
-                    @if($comment->isOwner())
-                    <span class="like_warning" style="color:red; display:none">
-                        Nggak boleh like sendiri
-                    </span>
-                    @endif
-                </span>
+                @component('layouts.likes',
+                [ 'content' => $comment, 'model_type' => 2] )
+                @endcomponent
 
                 @if($comment->isOwner())
                 <a class="btn btn-primary" href=" {{ route('comment.edit',$comment) }} ">Edit</a>
