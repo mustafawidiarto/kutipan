@@ -47,7 +47,7 @@ class QuoteController extends Controller
             $slug = $slug.'-'.time();
 
         //menghapus nilai dalam tag jika bernilai 0
-        $request->tags = array_diff($request->tags, [0]);
+        $request->tags = array_unique(array_diff($request->tags, [0]));
         if(empty($request->tags))
             return redirect()->route('quotes.create')->withInput($request->Input)->with('err_tag', 'Minimal 1 tag');
 
