@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Auth;
 use App\Models\User;
 use App\Models\Quote;
+use App\Models\Notification;
 use App\Models\QuoteComment;
 use Illuminate\Http\Request;
 
@@ -21,12 +22,22 @@ class QuoteCommentController extends Controller
             'subject' => 'required',
         ]);
 
+        $user = Auth::user();
+
         $comment = QuoteComment::create([
             'subject' => $request->subject,
             'quote_id' => $quote->id,
             'user_id' => Auth::user()->id
         ]);
 
+        if($quote->user->id != $user->id)
+        {
+            Notification::create([
+                'subject' => $user->name.' Mengomentari Kutipan '.$quote->judul,
+                'user_id' => $quote->user_id,
+                'quote_id' => $quote->id
+            ]);
+        }
 
         return redirect()->route('quotes.show', $quote->slug)->with('success-comment-'.$comment->id, 'Berhasil menambahkan komentar');
     }

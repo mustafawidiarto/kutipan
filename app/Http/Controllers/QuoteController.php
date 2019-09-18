@@ -7,6 +7,7 @@ use JavaScript;
 use App\Models\Tag;
 use App\Models\User;
 use App\Models\Quote;
+use App\Models\Notification;
 use App\Models\QuoteComment;
 use Illuminate\Http\Request;
 

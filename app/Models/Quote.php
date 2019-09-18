@@ -13,11 +13,18 @@ class Quote extends Model
         'judul', 'slug', 'subject', 'user_id'
     ];
 
-    public function comments(){
+    public function comments()
+    {
         return $this->hasMany('App\Models\QuoteComment');
     }
 
-    public function tags(){
+    public function tags()
+    {
         return $this->belongsToMany('App\Models\Tag');
+    }
+
+    public function notifications()
+    {
+        return $this->hasMany('App\Models\Notification');
     }
 }
