@@ -12,25 +12,6 @@ class QuoteCommentsTableSeeder extends Seeder
      */
     public function run()
     {
-        QuoteComment::create([
-            'quote_id' => '1',
-            'tag_id' => '1'
-        ]);
-        QuoteComment::create([
-            'quote_id' => '1',
-            'tag_id' => '2'
-        ]);
-        QuoteComment::create([
-            'quote_id' => '2',
-            'tag_id' => '1'
-        ]);
-        QuoteComment::create([
-            'quote_id' => '2',
-            'tag_id' => '3'
-        ]);
-        QuoteComment::create([
-            'quote_id' => '2',
-            'tag_id' => '4'
-        ]);
+        
     }
 }
